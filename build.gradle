@@ -40,6 +40,7 @@ dependencies {
 			'org.springframework.boot:spring-boot-starter-web',
 			'org.springframework.boot:spring-boot-starter-data-jpa',
 			'org.springframework.boot:spring-boot-starter-validation',
+//			'org.springframework.boot:spring-boot-starter-security',
 			'org.liquibase:liquibase-core:4.9.0',
 			'com.querydsl:querydsl-core:5.0.0',
 			'com.querydsl:querydsl-jpa:5.0.0'
@@ -64,8 +65,13 @@ dependencies {
 			'org.springframework.boot:spring-boot-starter-data-jpa'
 	)
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation(
+//			'org.springframework.boot:spring-boot-starter-security',
+//			'org.springframework.security:spring-security-test:5.6.2',
+			'org.springframework.boot:spring-boot-starter-test',
+	)
 }
+
 
 // Настраиваем таску diffChangeLog таким образом,
 // чтобы миграции учитывали изменения в моделях

@@ -1,5 +1,6 @@
 package hexlet.code.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,17 +23,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotBlank
+    //@NotBlank
     private String firstName;
 
-    @NotBlank
+    //@NotBlank
     private String lastName;
 
     @Column(unique = true)
     private String email;
 
+    //@NotBlank
+    @JsonIgnore
     private String password;
 
     @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 }
