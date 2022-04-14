@@ -19,7 +19,7 @@ application {
 }
 
 group = 'hexlet.code'
-version = '1.0-SNAPSHOT'
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
