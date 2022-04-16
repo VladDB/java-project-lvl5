@@ -1,21 +1,12 @@
-base-url: ""
-
 spring:
-  application:
-    name: hexletBlog
-
-  jpa:
-    show-sql: true
+  datasource:
+    url: jdbc:h2:mem:db
+    username: sa
+    password:
 
   liquibase:
-    enabled: true
-    change-log: classpath:db/changelog/changelog-master.xml
+    change-log: classpath:db/changelog/db.changelog-master.yaml
 
-  mvc:
-    hiddenmethod:
-      filter:
-        enabled: true
-
-logging:
-  level:
-    root: INFO
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
