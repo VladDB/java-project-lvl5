@@ -27,7 +27,9 @@ public class TaskStatusController {
 
     @GetMapping("/{id}")
     public TaskStatus getTaskStatus(@PathVariable long id) {
-        return taskStatusRepository.getById(id);
+        return taskStatusRepository.findById(id)
+                .orElseThrow(() ->
+                        new UserNotFoundException("Task status does not exist with ID = " + id));
     }
 
     @PostMapping
