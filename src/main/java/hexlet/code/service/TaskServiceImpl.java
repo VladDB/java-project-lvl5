@@ -5,6 +5,7 @@ import hexlet.code.exeptions.UserNotFoundException;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
@@ -30,6 +31,9 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private LabelRepository labelRepository;
+
     @Override
     public Task createNewTask(TaskDto taskDto) {
         Task task = new Task();
@@ -45,6 +49,7 @@ public class TaskServiceImpl implements TaskService {
         task.setAuthor(author);
         task.setExecutor(executor);
         task.setTaskStatus(taskStatus);
+        task.setLabels(labelRepository.findAllById(taskDto.getLabelIds()));
 
         return taskRepository.save(task);
     }
@@ -63,6 +68,7 @@ public class TaskServiceImpl implements TaskService {
         task.setDescription(taskDto.getDescription());
         task.setExecutor(executor);
         task.setTaskStatus(taskStatus);
+        task.setLabels(labelRepository.findAllById(taskDto.getLabelIds()));
 
         return taskRepository.save(task);
     }
