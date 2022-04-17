@@ -1,14 +1,14 @@
 package hexlet.code.controller;
 
+import com.querydsl.core.types.Predicate;
 import hexlet.code.dto.TaskDto;
 import hexlet.code.exeptions.UserNotFoundException;
 import hexlet.code.model.Task;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -21,8 +21,8 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public Iterable<Task> getAllTasks(@QuerydslPredicate(root = Task.class) Predicate predicate) {
+        return taskRepository.findAll(predicate);
     }
 
     @GetMapping("/{id}")
