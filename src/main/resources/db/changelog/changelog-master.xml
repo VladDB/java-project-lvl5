@@ -1,9 +1,22 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
-    <changeSet author="MacBook (generated)" id="1650131545122-1">
+    <changeSet author="MacBook (generated)" id="1650192843112-1">
         <createSequence incrementBy="1" sequenceName="hibernate_sequence" startValue="1"/>
     </changeSet>
-    <changeSet author="MacBook (generated)" id="1650131545122-2">
+    <changeSet author="MacBook (generated)" id="1650192843112-2">
+        <createTable tableName="task">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="taskPK"/>
+            </column>
+            <column name="created_at" type="date"/>
+            <column name="description" type="CLOB"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="author_id" type="BIGINT"/>
+            <column name="executor_id" type="BIGINT"/>
+            <column name="task_status_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MacBook (generated)" id="1650192843112-3">
         <createTable tableName="task_status">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="task_statusPK"/>
@@ -12,7 +25,7 @@
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="MacBook (generated)" id="1650131545122-3">
+    <changeSet author="MacBook (generated)" id="1650192843112-4">
         <createTable tableName="users">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="usersPK"/>
@@ -24,7 +37,16 @@
             <column name="password" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="MacBook (generated)" id="1650131545122-4">
+    <changeSet author="MacBook (generated)" id="1650192843112-5">
         <addUniqueConstraint columnNames="email" constraintName="UC_USERSEMAIL_COL" tableName="users"/>
+    </changeSet>
+    <changeSet author="MacBook (generated)" id="1650192843112-6">
+        <addForeignKeyConstraint baseColumnNames="task_status_id" baseTableName="task" constraintName="FK39t114vuu54mh3wqt50wc2vq4" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task_status" validate="true"/>
+    </changeSet>
+    <changeSet author="MacBook (generated)" id="1650192843112-7">
+        <addForeignKeyConstraint baseColumnNames="executor_id" baseTableName="task" constraintName="FK60p5enwpfg7w3pnor96m0t931" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="MacBook (generated)" id="1650192843112-8">
+        <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="task" constraintName="FKnu4tbtolc8avjgstax6sk0woe" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
 </databaseChangeLog>
