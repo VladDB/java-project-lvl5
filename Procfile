@@ -1,1 +1,1 @@
-web: java -Dspring.profiles.active=prod -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/app-1.0-SNAPSHOT-plain.jar
+web: sh build/install/app/bin/app
