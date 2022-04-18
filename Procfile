@@ -1,1 +1,1 @@
-web: sh build/install/app/bin/app
+web: java -jar -Dspring.profiles.active=prod build/libs/app-1.0-SNAPSHOT.jar
