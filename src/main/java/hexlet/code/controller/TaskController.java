@@ -8,9 +8,11 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Transactional
 @RequestMapping("/api/tasks")
 public class TaskController {
 
