@@ -5,8 +5,4 @@ spring:
     password:
 
   liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.yaml
-
-  jackson:
-    serialization:
-      fail-on-empty-beans: false
+    change-log: classpath:db/changelog/changelog-master.xml
