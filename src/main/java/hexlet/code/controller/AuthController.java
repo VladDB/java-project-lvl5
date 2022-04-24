@@ -17,7 +17,7 @@ public class AuthController {
     private final AuthenticationService authenticationService;
 
     @Operation(description = "Login")
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Correct data"),
             @ApiResponse(responseCode = "401", description = "Incorrect data")
     })

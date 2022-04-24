@@ -1,7 +1,7 @@
 package hexlet.code.controller;
 
 import hexlet.code.dto.LabelDto;
-import hexlet.code.exeptions.UserNotFoundException;
+import hexlet.code.exeptions.NotFoundException;
 import hexlet.code.model.Label;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.service.LabelService;
@@ -42,7 +42,7 @@ public class LabelController {
             @Parameter(description = "Label's ID")
             @PathVariable long id) {
         return labelRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("Label does not exist"));
+                .orElseThrow(() -> new NotFoundException("Label does not exist"));
     }
 
     @Operation(description = "Create new label")
@@ -80,7 +80,7 @@ public class LabelController {
             @PathVariable long id) {
         labelRepository.delete(
                 labelRepository.findById(id)
-                        .orElseThrow(() -> new UserNotFoundException("Label does not exist"))
+                        .orElseThrow(() -> new NotFoundException("Label does not exist"))
         );
     }
 }

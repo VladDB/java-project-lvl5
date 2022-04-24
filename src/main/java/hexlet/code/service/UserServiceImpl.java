@@ -1,7 +1,7 @@
 package hexlet.code.service;
 
 import hexlet.code.dto.UserDto;
-import hexlet.code.exeptions.UserNotFoundException;
+import hexlet.code.exeptions.NotFoundException;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(long id, UserDto userDto) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User does not exist"));
+                .orElseThrow(() -> new NotFoundException("User does not exist"));
 
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());

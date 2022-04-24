@@ -1,7 +1,7 @@
 package hexlet.code.controller;
 
 import hexlet.code.dto.TaskStatusDto;
-import hexlet.code.exeptions.UserNotFoundException;
+import hexlet.code.exeptions.NotFoundException;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.service.TaskStatusService;
@@ -43,7 +43,7 @@ public class TaskStatusController {
             @PathVariable long id) {
         return taskStatusRepository.findById(id)
                 .orElseThrow(() ->
-                        new UserNotFoundException("Task status does not exist with ID = " + id));
+                        new NotFoundException("Task status does not exist with ID = " + id));
     }
 
     @Operation(description = "Create new task status")
@@ -81,7 +81,7 @@ public class TaskStatusController {
             @PathVariable long id) {
         TaskStatus taskStatus = taskStatusRepository.findById(id)
                         .orElseThrow(() ->
-                                new UserNotFoundException("Task status does not exist with ID = " + id));
+                                new NotFoundException("Task status does not exist with ID = " + id));
         taskStatusRepository.delete(taskStatus);
     }
 }

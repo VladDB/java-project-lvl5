@@ -1,7 +1,7 @@
 package hexlet.code.controller;
 
 import hexlet.code.dto.UserDto;
-import hexlet.code.exeptions.UserNotFoundException;
+import hexlet.code.exeptions.NotFoundException;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.UserService;
@@ -43,7 +43,7 @@ public class UserController {
             @Parameter(description = "User's ID")
             @PathVariable long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User does not exist"));
+                .orElseThrow(() -> new NotFoundException("User does not exist"));
     }
 
     @Operation(description = "Show list of users")

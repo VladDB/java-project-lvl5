@@ -1,7 +1,7 @@
 package hexlet.code.service;
 
 import hexlet.code.dto.TaskStatusDto;
-import hexlet.code.exeptions.UserNotFoundException;
+import hexlet.code.exeptions.NotFoundException;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskStatusRepository;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
     @Override
     public TaskStatus updateTaskStatus(long id, TaskStatusDto taskStatusDto) {
         TaskStatus taskStatus = taskStatusRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("Task status does not exist with ID = " + id));
+                .orElseThrow(() -> new NotFoundException("Task status does not exist with ID = " + id));
 
         taskStatus.setName(taskStatusDto.getName());
 
