@@ -26,7 +26,6 @@ public class RollbarConfig {
     @Bean
     public Rollbar rollbar() {
 
-        // Your ACCESS TOKEN is: 8514ac5b46c6449e9de86f250ea42434
         return new Rollbar(getRollbarConfigs(rollbarToken));
     }
 
