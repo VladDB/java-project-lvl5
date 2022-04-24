@@ -4,3 +4,5 @@
 [![test](https://github.com/VladDB/java-project-lvl5/actions/workflows/test.yml/badge.svg)](https://github.com/VladDB/java-project-lvl5/actions/workflows/test.yml)
 
 <a href="https://ancient-hamlet-08736.herokuapp.com">HEROKU</a>
+
+<a href="https://ancient-hamlet-08736.herokuapp.com/swagger-ui.html">Documentation SWAGGER</a>
