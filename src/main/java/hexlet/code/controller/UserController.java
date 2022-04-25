@@ -1,5 +1,6 @@
 package hexlet.code.controller;
 
+import com.rollbar.notifier.Rollbar;
 import hexlet.code.dto.UserDto;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
@@ -28,6 +29,9 @@ import java.util.List;
 public class UserController {
 
     @Autowired
+    private Rollbar rollbar;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -50,6 +54,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "List of users")
     @GetMapping("/users")
     public List<User> getAllUsers() {
+        rollbar.debug("Connect");
         return userRepository.findAll();
     }
 
