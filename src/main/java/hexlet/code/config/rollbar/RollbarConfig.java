@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 })
 public class RollbarConfig {
 
-    @Value("${rollbar_token:}")
+    @Value("${rollbar.token:}")
     private String rollbarToken;
 
     @Value("${spring.profiles.active:}")
