@@ -1,7 +1,6 @@
 package hexlet.code.service;
 
 import hexlet.code.dto.TaskDto;
-import hexlet.code.exeptions.NotFoundException;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
@@ -13,6 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -42,7 +43,7 @@ public class TaskServiceImpl implements TaskService {
         User executor = userRepository.findById(taskDto.getExecutorId())
                 .orElse(null);
         TaskStatus taskStatus = taskStatusRepository.findById(taskDto.getTaskStatusId())
-                .orElseThrow(() -> new NotFoundException("Task status does not exist"));
+                .orElseThrow(() -> new NoSuchElementException("Task status does not exist"));
 
         task.setName(taskDto.getName());
         task.setDescription(taskDto.getDescription());
@@ -57,12 +58,12 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task updateTask(long id, TaskDto taskDto) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Task does not exist"));
+                .orElseThrow(() -> new NoSuchElementException("Task does not exist"));
 
         User executor = userRepository.findById(taskDto.getExecutorId())
                 .orElse(null);
         TaskStatus taskStatus = taskStatusRepository.findById(taskDto.getTaskStatusId())
-                .orElseThrow(() -> new NotFoundException("Task status does not exist"));
+                .orElseThrow(() -> new NoSuchElementException("Task status does not exist"));
 
         task.setName(taskDto.getName());
         task.setDescription(taskDto.getDescription());

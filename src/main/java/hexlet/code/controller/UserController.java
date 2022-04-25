@@ -1,7 +1,6 @@
 package hexlet.code.controller;
 
 import hexlet.code.dto.UserDto;
-import hexlet.code.exeptions.NotFoundException;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.UserService;
@@ -11,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +43,7 @@ public class UserController {
             @Parameter(description = "User's ID")
             @PathVariable long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User does not exist"));
+                .orElseThrow(() -> new UsernameNotFoundException("User does not exist"));
     }
 
     @Operation(description = "Show list of users")

@@ -1,12 +1,12 @@
 package hexlet.code.service;
 
 import hexlet.code.dto.UserDto;
-import hexlet.code.exeptions.NotFoundException;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(long id, UserDto userDto) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User does not exist"));
+                .orElseThrow(() -> new UsernameNotFoundException("User does not exist"));
 
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());

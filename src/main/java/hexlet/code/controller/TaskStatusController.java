@@ -1,7 +1,6 @@
 package hexlet.code.controller;
 
 import hexlet.code.dto.TaskStatusDto;
-import hexlet.code.exeptions.NotFoundException;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.service.TaskStatusService;
@@ -14,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/statuses")
@@ -43,7 +43,7 @@ public class TaskStatusController {
             @PathVariable long id) {
         return taskStatusRepository.findById(id)
                 .orElseThrow(() ->
-                        new NotFoundException("Task status does not exist with ID = " + id));
+                        new NoSuchElementException("Task status does not exist with ID = " + id));
     }
 
     @Operation(description = "Create new task status")
@@ -81,7 +81,7 @@ public class TaskStatusController {
             @PathVariable long id) {
         TaskStatus taskStatus = taskStatusRepository.findById(id)
                         .orElseThrow(() ->
-                                new NotFoundException("Task status does not exist with ID = " + id));
+                                new NoSuchElementException("Task status does not exist with ID = " + id));
         taskStatusRepository.delete(taskStatus);
     }
 }

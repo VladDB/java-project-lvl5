@@ -2,7 +2,6 @@ package hexlet.code.controller;
 
 import com.querydsl.core.types.Predicate;
 import hexlet.code.dto.TaskDto;
-import hexlet.code.exeptions.NotFoundException;
 import hexlet.code.model.Task;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.service.TaskService;
@@ -15,6 +14,8 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 @RestController
 @Transactional
@@ -44,7 +45,7 @@ public class TaskController {
             @Parameter(description = "Task's ID")
             @PathVariable long id) {
         return taskRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Task does not exist"));
+                .orElseThrow(() -> new NoSuchElementException("Task does not exist"));
     }
 
     @Operation(description = "Create new task")
@@ -81,6 +82,6 @@ public class TaskController {
             @Parameter(description = "Task's ID")
             @PathVariable long id) {
         taskRepository.delete(taskRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Task does not exist")));
+                .orElseThrow(() -> new NoSuchElementException("Task does not exist")));
     }
 }
