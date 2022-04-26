@@ -19,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 })
 public class RollbarConfig {
 
-    @Value("${rollbar_token:}")
+    @Value("${rollbar.token:}")
     private String rollbarToken;
 
     @Value("${spring.profiles.active:}")
@@ -34,7 +34,7 @@ public class RollbarConfig {
     private Config getRollbarConfigs(String accessToken) {
 
         return RollbarSpringConfigBuilder.withAccessToken(accessToken)
-                .environment("development")
+                .environment("production")
                 .enabled(activeProfile == "prod")
                 .build();
     }
