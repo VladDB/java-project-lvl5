@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.TaskStatusDto;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.utils.TestUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,24 +41,29 @@ public class TaskStatusTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-//    @Test
-//    void getAll() throws Exception {
-//        testUtils.regDefaultUser();
-//
-//        MockHttpServletResponse response = testUtils.perform(
-//                        get(PATH_STATUSES).contentType(MediaType.APPLICATION_JSON),
-//                        TestUtils.TEST_USER)
-//                .andExpect(status().isOk()).andReturn().getResponse();
-//
-//        assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
-//        assertThat(response.getContentAsString()).contains("firstStatus", "secondStatus");
-//    }
+    @BeforeEach
+    public void reg() throws Exception {
+        testUtils.regDefaultUser();
+    }
 
+    @AfterEach
+    public void clean() {
+        testUtils.tearDown();
+    }
+
+    @Test
+    void getAll() throws Exception {
+        MockHttpServletResponse response = testUtils.perform(
+                        get(PATH_STATUSES).contentType(MediaType.APPLICATION_JSON),
+                        TestUtils.TEST_USER)
+                .andExpect(status().isOk()).andReturn().getResponse();
+
+        assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
+        assertThat(response.getContentAsString()).contains("firstStatus", "secondStatus");
+    }
 
     @Test
     void createTaskStatus() throws Exception {
-        testUtils.regDefaultUser();
-
         TaskStatusDto testStatus = new TaskStatusDto(
                 "Status1"
         );
@@ -77,8 +84,6 @@ public class TaskStatusTest {
 
     @Test
     void updateTaskStatus() throws Exception {
-        testUtils.regDefaultUser();
-
         TaskStatusDto testStatus = new TaskStatusDto(
                 "Status1"
         );
@@ -110,8 +115,6 @@ public class TaskStatusTest {
 
     @Test
     void deleteTaskStatus() throws Exception {
-        testUtils.regDefaultUser();
-
         TaskStatusDto testStatus = new TaskStatusDto(
                 "Status1"
         );

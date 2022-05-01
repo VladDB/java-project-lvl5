@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.LabelDto;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.utils.TestUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,23 +41,29 @@ public class LabelTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-//    @Test
-//    void getAll() throws Exception {
-//        testUtils.regDefaultUser();
-//
-//        MockHttpServletResponse response = testUtils.perform(
-//                get(PATH_LABELS).contentType(MediaType.APPLICATION_JSON),
-//                        TestUtils.TEST_USER)
-//                .andExpect(status().isOk()).andReturn().getResponse();
-//
-//        assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
-//        assertThat(response.getContentAsString()).contains("firstLabel", "secondLabel");
-//    }
+    @BeforeEach
+    public void reg() throws Exception {
+        testUtils.regDefaultUser();
+    }
+
+    @AfterEach
+    public void clean() {
+        testUtils.tearDown();
+    }
+
+    @Test
+    void getAll() throws Exception {
+        MockHttpServletResponse response = testUtils.perform(
+                get(PATH_LABELS).contentType(MediaType.APPLICATION_JSON),
+                        TestUtils.TEST_USER)
+                .andExpect(status().isOk()).andReturn().getResponse();
+
+        assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
+        assertThat(response.getContentAsString()).contains("firstLabel", "secondLabel");
+    }
 
     @Test
     void createLabels() throws Exception {
-        testUtils.regDefaultUser();
-
         LabelDto testLabelDto = new LabelDto(
                 "label1"
         );
@@ -77,8 +85,6 @@ public class LabelTest {
 
     @Test
     void updateLabels() throws Exception {
-        testUtils.regDefaultUser();
-
         LabelDto testLabelDto = new LabelDto(
                 "label1"
         );
@@ -111,8 +117,6 @@ public class LabelTest {
 
     @Test
     void deleteLabels() throws Exception {
-        testUtils.regDefaultUser();
-
         LabelDto testLabelDto = new LabelDto(
                 "label1"
         );

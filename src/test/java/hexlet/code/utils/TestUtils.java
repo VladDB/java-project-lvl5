@@ -2,6 +2,10 @@ package hexlet.code.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.UserDto;
+import hexlet.code.repository.LabelRepository;
+import hexlet.code.repository.TaskRepository;
+import hexlet.code.repository.TaskStatusRepository;
+import hexlet.code.repository.UserRepository;
 import hexlet.code.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,6 +40,25 @@ public class TestUtils {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private TaskStatusRepository taskStatusRepository;
+
+    @Autowired
+    private LabelRepository labelRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
+
+    public void tearDown() {
+        taskRepository.deleteAll();
+        userRepository.deleteAll();
+        labelRepository.deleteAll();
+        taskStatusRepository.deleteAll();
+    }
 
     public ResultActions regDefaultUser() throws Exception {
         return regUser(testUserDto);

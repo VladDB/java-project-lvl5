@@ -5,6 +5,8 @@ import hexlet.code.dto.TaskDto;
 import hexlet.code.model.Task;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.utils.TestUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,23 +41,29 @@ public class TaskTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-//    @Test
-//    void getAll() throws Exception {
-//        testUtils.regDefaultUser();
-//
-//        MockHttpServletResponse response = testUtils.perform(
-//                        get(PATH_TASKS).contentType(MediaType.APPLICATION_JSON),
-//                        TestUtils.TEST_USER)
-//                .andExpect(status().isOk()).andReturn().getResponse();
-//
-//        assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
-//        assertThat(response.getContentAsString()).contains("firstStatus", "secondStatus");
-//    }
+    @BeforeEach
+    public void reg() throws Exception {
+        testUtils.regDefaultUser();
+    }
+
+    @AfterEach
+    public void clean() {
+        testUtils.tearDown();
+    }
+
+    @Test
+    void getAll() throws Exception {
+        MockHttpServletResponse response = testUtils.perform(
+                        get(PATH_TASKS).contentType(MediaType.APPLICATION_JSON),
+                        TestUtils.TEST_USER)
+                .andExpect(status().isOk()).andReturn().getResponse();
+
+        assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
+        assertThat(response.getContentAsString()).contains("firstStatus", "secondStatus");
+    }
 
     @Test
     void createTask() throws Exception {
-        testUtils.regDefaultUser();
-
         List<Long> labels = List.of(12L, 13L);
         TaskDto testTaskDto = new TaskDto(
                 "third Task",
@@ -84,8 +92,6 @@ public class TaskTest {
 
     @Test
     void updateTask() throws Exception {
-        testUtils.regDefaultUser();
-
         List<Long> labels = List.of(12L, 13L);
         TaskDto updateTaskDto = new TaskDto(
                 "third Task",
@@ -117,8 +123,6 @@ public class TaskTest {
 
     @Test
     void deleteTask() throws Exception {
-        testUtils.regDefaultUser();
-
         Task deleteTask = taskRepository.findByName("firstTask").get();
 
         testUtils.perform(delete(PATH_TASKS + "/" + deleteTask.getId())
