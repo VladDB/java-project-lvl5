@@ -1,8 +1,8 @@
 package hexlet.code.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.dto.TaskStatusDto;
-import hexlet.code.repository.TaskStatusRepository;
+import hexlet.code.dto.LabelDto;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.utils.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Transactional
-public class TaskStatusTest {
+public class LabelTest {
 
-    private static final String PATH_STATUSES = "/api/statuses";
+    private static final String PATH_LABELS = "/api/labels";
 
     @Autowired
     private MockMvc mockMvc;
@@ -34,7 +34,7 @@ public class TaskStatusTest {
     private TestUtils testUtils;
 
     @Autowired
-    private TaskStatusRepository taskStatusRepository;
+    private LabelRepository labelRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -44,95 +44,97 @@ public class TaskStatusTest {
 //        testUtils.regDefaultUser();
 //
 //        MockHttpServletResponse response = testUtils.perform(
-//                        get(PATH_STATUSES).contentType(MediaType.APPLICATION_JSON),
+//                get(PATH_LABELS).contentType(MediaType.APPLICATION_JSON),
 //                        TestUtils.TEST_USER)
 //                .andExpect(status().isOk()).andReturn().getResponse();
 //
 //        assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
-//        assertThat(response.getContentAsString()).contains("firstStatus", "secondStatus");
+//        assertThat(response.getContentAsString()).contains("firstLabel", "secondLabel");
 //    }
 
-
     @Test
-    void createTaskStatus() throws Exception {
+    void createLabels() throws Exception {
         testUtils.regDefaultUser();
 
-        TaskStatusDto testStatus = new TaskStatusDto(
-                "Status1"
+        LabelDto testLabelDto = new LabelDto(
+                "label1"
         );
 
-        testUtils.perform(post(PATH_STATUSES)
+        testUtils.perform(post(PATH_LABELS)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(testStatus)),
+                .content(objectMapper.writeValueAsString(testLabelDto)),
                 TestUtils.TEST_USER).andExpect(status().isCreated());
 
-        MockHttpServletResponse response = testUtils.perform(get(PATH_STATUSES)
-                .contentType(MediaType.APPLICATION_JSON),
-                TestUtils.TEST_USER).andReturn().getResponse();
+        MockHttpServletResponse response = testUtils.perform(get(PATH_LABELS)
+                        .contentType(MediaType.APPLICATION_JSON),
+                TestUtils.TEST_USER)
+                .andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(200);
         assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
-        assertThat(response.getContentAsString()).contains(testStatus.getName());
+        assertThat(response.getContentAsString()).contains(testLabelDto.getName());
     }
 
     @Test
-    void updateTaskStatus() throws Exception {
+    void updateLabels() throws Exception {
         testUtils.regDefaultUser();
 
-        TaskStatusDto testStatus = new TaskStatusDto(
-                "Status1"
+        LabelDto testLabelDto = new LabelDto(
+                "label1"
         );
 
-        testUtils.perform(post(PATH_STATUSES)
+        testUtils.perform(post(PATH_LABELS)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(testStatus)),
+                        .content(objectMapper.writeValueAsString(testLabelDto)),
                 TestUtils.TEST_USER).andExpect(status().isCreated());
 
-        long id = taskStatusRepository.findByName(testStatus.getName()).get().getId();
-
-        TaskStatusDto updateTestStatus = new TaskStatusDto(
-                "updateStatus"
+        LabelDto updateTestLabelDto = new LabelDto(
+                "updateLabel"
         );
 
-        testUtils.perform(put(PATH_STATUSES + "/" + id)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updateTestStatus)),
-                TestUtils.TEST_USER).andExpect(status().isOk());
+        long id = labelRepository.findByName(testLabelDto.getName()).get().getId();
 
-        MockHttpServletResponse response = testUtils.perform(get(PATH_STATUSES)
-                        .contentType(MediaType.APPLICATION_JSON),
-                TestUtils.TEST_USER).andReturn().getResponse();
+        testUtils.perform(put(PATH_LABELS + "/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateTestLabelDto)),
+        TestUtils.TEST_USER).andExpect(status().isOk());
+
+        MockHttpServletResponse response = testUtils.perform(get(PATH_LABELS)
+                                .contentType(MediaType.APPLICATION_JSON),
+                        TestUtils.TEST_USER)
+                .andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(200);
         assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
-        assertThat(response.getContentAsString()).contains(updateTestStatus.getName());
+        assertThat(response.getContentAsString()).contains(updateTestLabelDto.getName());
     }
 
     @Test
-    void deleteTaskStatus() throws Exception {
+    void deleteLabels() throws Exception {
         testUtils.regDefaultUser();
 
-        TaskStatusDto testStatus = new TaskStatusDto(
-                "Status1"
+        LabelDto testLabelDto = new LabelDto(
+                "label1"
         );
 
-        testUtils.perform(post(PATH_STATUSES)
+        testUtils.perform(post(PATH_LABELS)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(testStatus)),
+                        .content(objectMapper.writeValueAsString(testLabelDto)),
                 TestUtils.TEST_USER).andExpect(status().isCreated());
 
-        long id = taskStatusRepository.findByName(testStatus.getName()).get().getId();
+        long id = labelRepository.findByName(testLabelDto.getName()).get().getId();
 
-        testUtils.perform(delete(PATH_STATUSES + "/" + id)
+        testUtils.perform(delete(PATH_LABELS + "/" + id)
                         .contentType(MediaType.APPLICATION_JSON),
                 TestUtils.TEST_USER).andExpect(status().isOk());
 
-        MockHttpServletResponse response = testUtils.perform(get(PATH_STATUSES)
-                        .contentType(MediaType.APPLICATION_JSON),
-                TestUtils.TEST_USER).andReturn().getResponse();
+        MockHttpServletResponse response = testUtils.perform(get(PATH_LABELS)
+                                .contentType(MediaType.APPLICATION_JSON),
+                        TestUtils.TEST_USER)
+                .andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(200);
         assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
-        assertThat(response.getContentAsString()).doesNotContain(testStatus.getName());
+        assertThat(response.getContentAsString()).doesNotContain(testLabelDto.getName());
     }
 }
