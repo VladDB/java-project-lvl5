@@ -55,9 +55,16 @@ public class TestUtils {
 
     public void tearDown() {
         taskRepository.deleteAll();
+        taskRepository.flush();
+
         userRepository.deleteAll();
+        userRepository.flush();
+
         labelRepository.deleteAll();
+        labelRepository.flush();
+
         taskStatusRepository.deleteAll();
+        taskStatusRepository.flush();
     }
 
     public ResultActions regDefaultUser() throws Exception {
