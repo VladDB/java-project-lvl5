@@ -1,12 +1,14 @@
 package hexlet.code.controller;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.utils.TestUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Sql(scripts = {"/users.sql"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Transactional
@@ -33,6 +36,11 @@ public class UserControllerTest {
     @Autowired
     private TestUtils testUtils;
 
+    @AfterEach
+    void clear() {
+        testUtils.tearDown();
+    }
+
     @Test
     void testGetAllUsers() throws Exception {
         MockHttpServletResponse response = mockMvc
@@ -40,7 +48,7 @@ public class UserControllerTest {
                 .andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(200);
-        assertThat(response.getContentAsString()).contains("Robert", "Lock", "lock@mail.com");
+        assertThat(response.getContentAsString()).contains("Robert", "Lock", "Robert@mail.com");
         assertThat(response.getContentAsString()).doesNotContain("password");
     }
 
@@ -50,7 +58,7 @@ public class UserControllerTest {
                 .perform(post(PATH_USERS).contentType(MediaType.APPLICATION_JSON)
                         .content("{\"firstName\": \"Jackson\", "
                                 + "\"lastName\": \"Bind\", "
-                                + "\"email\": \"jl@mail.ru\", "
+                                + "\"email\": \"jb@mail.ru\", "
                                 + "\"password\": \"password1\"}"))
                 .andReturn().getResponse();
 
@@ -63,7 +71,7 @@ public class UserControllerTest {
 
         assertThat(response.getStatus()).isEqualTo(200);
         assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
-        assertThat(response.getContentAsString()).contains("Jackson", "Bind", "jl@mail.ru");
+        assertThat(response.getContentAsString()).contains("Jackson", "Bind", "jb@mail.ru");
     }
 
     @Test
