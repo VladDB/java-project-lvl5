@@ -54,7 +54,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "List of users")
     @GetMapping("/users")
     public List<User> getAllUsers() {
-        rollbar.error("Connect");
+        rollbar.debug("Connect");
         return userRepository.findAll();
     }
 
