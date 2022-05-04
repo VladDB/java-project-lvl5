@@ -2,9 +2,9 @@ package hexlet.code.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.LabelDto;
+import hexlet.code.model.Label;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.utils.TestUtils;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +22,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Sql(scripts = {"/labels.sql"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Transactional
@@ -43,11 +41,6 @@ public class LabelTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @AfterEach
-    void clear() {
-        testUtils.tearDown();
-    }
-
     @BeforeEach
     public void reg() throws Exception {
         testUtils.regDefaultUser();
@@ -55,13 +48,21 @@ public class LabelTest {
 
     @Test
     void getAll() throws Exception {
+        Label firstTestLabel = new Label();
+        firstTestLabel.setName("first test label");
+        labelRepository.save(firstTestLabel);
+
+        Label secondTestLabel = new Label();
+        secondTestLabel.setName("second test label");
+        labelRepository.save(secondTestLabel);
+
         MockHttpServletResponse response = testUtils.perform(
                 get(PATH_LABELS).contentType(MediaType.APPLICATION_JSON),
                         TestUtils.TEST_USER)
                 .andExpect(status().isOk()).andReturn().getResponse();
 
         assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
-        assertThat(response.getContentAsString()).contains("1label", "2label");
+        assertThat(response.getContentAsString()).contains(firstTestLabel.getName(), secondTestLabel.getName());
     }
 
     @Test

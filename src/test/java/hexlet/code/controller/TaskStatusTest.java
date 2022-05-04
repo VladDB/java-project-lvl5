@@ -2,9 +2,9 @@ package hexlet.code.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.TaskStatusDto;
+import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.utils.TestUtils;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +22,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Sql(scripts = {"/taskStatus.sql"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Transactional
@@ -48,20 +46,23 @@ public class TaskStatusTest {
         testUtils.regDefaultUser();
     }
 
-    @AfterEach
-    void clear() {
-        testUtils.tearDown();
-    }
-
     @Test
     void getAll() throws Exception {
+        TaskStatus firstTestStatus = new TaskStatus();
+        firstTestStatus.setName("first status");
+        taskStatusRepository.save(firstTestStatus);
+
+        TaskStatus secondTestStatus = new TaskStatus();
+        secondTestStatus.setName("second status");
+        taskStatusRepository.save(secondTestStatus);
+
         MockHttpServletResponse response = testUtils.perform(
                         get(PATH_STATUSES).contentType(MediaType.APPLICATION_JSON),
                         TestUtils.TEST_USER)
                 .andExpect(status().isOk()).andReturn().getResponse();
 
         assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
-        assertThat(response.getContentAsString()).contains("1Status", "2Status");
+        assertThat(response.getContentAsString()).contains(firstTestStatus.getName(), secondTestStatus.getName());
     }
 
     @Test
