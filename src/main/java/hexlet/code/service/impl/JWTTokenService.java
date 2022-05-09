@@ -1,5 +1,6 @@
-package hexlet.code.service;
+package hexlet.code.service.impl;
 
+import hexlet.code.service.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.Jwts;
